@@ -1,8 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --pokemon-red: #e3350d;
@@ -99,18 +97,18 @@ header {
 
 .type-btn {
   text-align: center;
-  border-radius: 5px;
+  border-radius: 20px;
   border: none;
   margin: 1rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.2rem 1.5rem;
   font-size: 1.2rem;
+  min-width: 10rem;
 }
 
-.poke-type-small {
-  text-align: center;
-  border-radius: 5px;
+.type-btn-small {
   margin: 0.2rem;
-  padding: 0.5rem;
+  font-size: 1rem;
+  min-width: auto;
 }
 
 .poison {
@@ -199,9 +197,9 @@ header {
 
 .poke-info-wrapper {
   background-color: var(--pokemon-yellow);
-  max-width: 900px;
+  max-width: 1000px;
   color: var(--background);
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 0.5rem;
 }
 
@@ -209,27 +207,51 @@ header {
   margin-top: 0;
 }
 
+.inner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .inner-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.info-wrapper {
+  display: flex;
+  border: 2px solid var(--background);
+  border-radius: 0.5rem;
 }
 
 .poke-info {
   /* min-width: 10rem; */
-  background-color: var(--pokemon-blue);
+  /* background-color: var(--pokemon-blue); */
   margin: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
-  color: var(--foregroud);
+  /* color: var(--foregroud); */
 }
 
 .poke-info h4 {
-  margin: 0.2rem;
+  margin: 0.5rem 0;
+}
+
+.img-container {
+  flex-basis: 40%;
+  display: flex;
+  justify-content: center;
+}
+
+.type-container,
+.info-wrapper {
+  flex-basis: 30%;
 }
 
 .poke-info-img {
   max-width: 400px;
-  background-color: var(--background-light);
+  /* background-color: var(--background-light); */
   border-radius: 0.5rem;
   margin: 1rem;
 }
@@ -237,7 +259,7 @@ header {
 .stats-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   margin: 1rem;
   position: relative;
 }
@@ -245,7 +267,6 @@ header {
 .stat-bar {
   width: 6rem;
   height: 12.5rem;
-  /* border-radius: 0% 0% 50% 50% / 0% 0% 100% 100%; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -263,44 +284,44 @@ header {
 
   background: linear-gradient(
     to top,
-    #e3340d00 5%,
-    #ffcb01 5%,
+    #e3340d00 8%,
+    #ffcb01 8%,
     #ffcb01 10%,
     #e3340d00 10%,
-    #e3340d00 15%,
-    #ffcb01 15%,
+    #e3340d00 18%,
+    #ffcb01 18%,
     #ffcb01 20%,
     #e3340d00 20%,
-    #e3340d00 25%,
-    #ffcb01 25%,
+    #e3340d00 28%,
+    #ffcb01 28%,
     #ffcb01 30%,
     #e3340d00 30%,
-    #e3340d00 35%,
-    #ffcb01 35%,
+    #e3340d00 38%,
+    #ffcb01 38%,
     #ffcb01 40%,
     #e3340d00 40%,
-    #e3340d00 45%,
-    #ffcb01 45%,
+    #e3340d00 48%,
+    #ffcb01 48%,
     #ffcb01 50%,
     #e3340d00 50%,
-    #e3340d00 55%,
-    #ffcb01 55%,
+    #e3340d00 58%,
+    #ffcb01 58%,
     #ffcb01 60%,
     #e3340d00 60%,
-    #e3340d00 65%,
-    #ffcb01 65%,
+    #e3340d00 68%,
+    #ffcb01 68%,
     #ffcb01 70%,
     #e3340d00 70%,
-    #e3340d00 75%,
-    #ffcb01 75%,
+    #e3340d00 78%,
+    #ffcb01 78%,
     #ffcb01 80%,
     #e3340d00 80%,
-    #e3340d00 85%,
-    #ffcb01 85%,
+    #e3340d00 88%,
+    #ffcb01 88%,
     #ffcb01 90%,
     #e3340d00 90%,
-    #e3340d00 95%,
-    #ffcb01 95%,
+    #e3340d00 98%,
+    #ffcb01 98%,
     #ffcb01 100%
   );
   margin: 0.5rem;
@@ -327,5 +348,32 @@ header {
   color: var(--background);
   z-index: 5;
   position: absolute;
-  top: -2px;
+  top: -5px;
+}
+
+.type-container {
+  text-align: center;
+}
+
+.type-container h3 {
+  margin: 0.5rem;
+}
+
+.evo-wrapper {
+  text-align: center;
+}
+
+.evo-inner {
+  display: flex;
+  justify-content: space-around;
+}
+
+.evo-card {
+  flex-basis: 25%;
+  border: 2px solid var(--background);
+  border-radius: 0.5rem;
+}
+
+.evo-card img {
+  width: 100%;
 }

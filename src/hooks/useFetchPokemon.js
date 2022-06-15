@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import API from "../API";
-import { capitalizeName } from "../utilities";
+import {
+  capitalizeName,
+  getWeaknesses,
+  checkSaveEvoChain,
+  getEvoDisplayData,
+} from "../utilities";
 
 export const useFetchPokemon = (name) => {
   const [state, setState] = useState([]);
@@ -15,37 +20,32 @@ export const useFetchPokemon = (name) => {
 
       const pokemon = await API.fetchPokemon(name, API.POKEURL);
 
+      // Isolate basic info
       const pokemonId = pokemon.id;
       const imgUrl = pokemon.sprites.other["official-artwork"].front_default;
       const height = pokemon.height;
       const weight = pokemon.weight;
 
-      const getWeaknesses = async (url, name) => {
-        const weaknesses = [];
-        const typeData = await API.fetchTypes(name, url);
-        const weaknessArray = typeData.damage_relations.double_damage_from;
-        for (let weakness of weaknessArray) {
-          if (!weaknesses.includes(weakness.name)) {
-            weaknesses.push(weakness.name);
-          }
-        }
-        return weaknesses;
-      };
-
+      // Isolate weaknesses, populated by function call in types map function
       let weaknessesArray = [];
+
+      // Isolate Types
       const types = pokemon.types;
       const typesPrep = types.map(async (element) => {
         const typeName = element.type.name;
         const typeUrl = element.type.url;
 
         const weaknesses = await getWeaknesses(API.TYPESURL, typeName);
-        weaknessesArray = [...weaknessesArray, ...weaknesses];
+        for (let weakness of weaknesses) {
+          if (!weaknessesArray.includes(weakness))
+            weaknessesArray.push(weakness);
+        }
 
         return { typeName, typeUrl };
       });
-
       const typesArray = await Promise.all(typesPrep);
 
+      // Isolate Stats
       const stats = pokemon.stats;
       const statsArray = stats.map((element) => {
         const statName = element.stat.name;
@@ -54,6 +54,7 @@ export const useFetchPokemon = (name) => {
         return { statName, statUrl, base };
       });
 
+      // Isolate abilities
       const abilities = pokemon.abilities;
       const abilitiesArray = abilities.map((element) => {
         const abilityName = element.ability.name;
@@ -61,6 +62,14 @@ export const useFetchPokemon = (name) => {
         return { abilityName, abilityUrl };
       });
 
+      // Isolate Evo-tree data
+      const speciesUrl = pokemon.species.url;
+      const speciesData = await API.fetchSpecies(speciesUrl);
+      const evoChain = await API.fetchSpecies(speciesData.evolution_chain.url);
+      const evoChainNames = await checkSaveEvoChain(evoChain);
+      const evoDisplay = await getEvoDisplayData(evoChainNames);
+
+      // Save pokemon data to state
       setState({
         id: pokemonId,
         name: capitalizeName(name),
@@ -71,6 +80,7 @@ export const useFetchPokemon = (name) => {
         statsArray,
         abilitiesArray,
         weaknessesArray,
+        evoDisplay,
         data: pokemon,
       });
     } catch (error) {
@@ -79,10 +89,9 @@ export const useFetchPokemon = (name) => {
     setLoading(false);
   };
 
-  // Initial render
+  // Initial render, trigger function
   useEffect(() => {
     console.log("Grabbing from API");
-    // setState(initialState);
     fetchPokemon();
   }, []);
 

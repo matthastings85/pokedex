@@ -1,11 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useFetchPokemon } from "../hooks/useFetchPokemon";
-import { capitalizeName } from "../utilities";
 
+// Hooks
+import { useFetchPokemon } from "../hooks/useFetchPokemon";
+
+// Components
 import Spinner from "./Spinner";
 import Stats from "./Stats";
 import TypeBtn from "./TypeBtn";
+import EvoChain from "./EvoChain";
 
 const PokemonInfo = () => {
   const { pokemonName } = useParams();
@@ -18,13 +21,28 @@ const PokemonInfo = () => {
     <div className="poke-info-wrapper pokedex-wrapper">
       <h2>{`${state.name} - #${state.id}`}</h2>
 
-      <div className="inner-wrapper">
-        <div>
-          <img className="poke-info-img" src={state.imgUrl} alt={state.name} />
-          {state.statsArray !== undefined && <Stats stats={state.statsArray} />}
-        </div>
-        <div>
-          <div className="inner-wrapper">
+      <div className="inner-container">
+        <div className="inner-wrapper">
+          <div className="type-container">
+            <h3>Types</h3>
+            {state.typesArray !== undefined &&
+              state.typesArray.map((type) => {
+                return <TypeBtn key={type.typeName} typeName={type.typeName} />;
+              })}
+            <h3>Weaknesses</h3>
+            {state.weaknessesArray !== undefined &&
+              state.weaknessesArray.map((weakness) => {
+                return <TypeBtn weakness key={weakness} typeName={weakness} />;
+              })}
+          </div>
+          <div className="img-container">
+            <img
+              className="poke-info-img"
+              src={state.imgUrl}
+              alt={state.name}
+            />
+          </div>
+          <div className="info-wrapper">
             <div className="poke-info">
               <h4>Height:</h4>
               <div>{state.height}</div>
@@ -41,17 +59,11 @@ const PokemonInfo = () => {
                 })}
             </div>
           </div>
-          <h3>Types</h3>
-          {state.typesArray !== undefined &&
-            state.typesArray.map((type) => {
-              return <TypeBtn key={type.typeName} typeName={type.typeName} />;
-            })}
-          <h3>Weaknesses</h3>
-          {state.weaknessesArray !== undefined &&
-            state.weaknessesArray.map((weakness) => {
-              return <TypeBtn key={weakness} typeName={weakness} />;
-            })}
         </div>
+        {state.statsArray !== undefined && <Stats stats={state.statsArray} />}
+        {state.evoDisplay !== undefined && (
+          <EvoChain evoChain={state.evoDisplay} />
+        )}
       </div>
     </div>
   );
