@@ -7,7 +7,7 @@ import API from "../API";
 
 export const useFetchAllPokemon = () => {
   const [allPokemon, setAllPokemon] = useState([]);
-  const [nextUrl, setNextUrl] = useState(undefined);
+  const [nextUrl, setNextUrl] = useState(API.POKEURL);
 
   useEffect(() => {
     const fetchPokemon = async () => {

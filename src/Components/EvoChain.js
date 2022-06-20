@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const EvoChain = ({ evoChain }) => {
   console.log(evoChain);
@@ -9,8 +10,10 @@ const EvoChain = ({ evoChain }) => {
         {evoChain.map((pokemon) => {
           return (
             <div key={pokemon.pokemonId} className="evo-card">
-              <img src={pokemon.imgUrl} alt={pokemon.pokemonName} />
-              <h4>{pokemon.pokemonName}</h4>
+              <Link to={`/${pokemon.pokemonName}`}>
+                <img src={pokemon.imgUrl} alt={pokemon.pokemonName} />
+                <h4>{pokemon.pokemonName}</h4>
+              </Link>
             </div>
           );
         })}

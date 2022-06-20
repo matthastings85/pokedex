@@ -9,25 +9,56 @@ import { useFetchAllPokemon } from "../hooks/useFetchAllPokemon";
 import { useDisplayFetch } from "../hooks/useDisplayFetch";
 import Spinner from "./Spinner";
 
-const Pokedex = () => {
-  const { state, loading, error, setIsLoadingMore } = useDisplayFetch();
+// Utilities
+import { capitalizeName, handleSearch } from "../utilities";
+import { useParams } from "react-router-dom";
 
+const Pokedex = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true);
   const { allPokemon } = useFetchAllPokemon();
+  const {
+    state,
+    loading,
+    error,
+    reset,
+    setLoading,
+    setIsLoadingMore,
+    setIsSearching,
+    setSearchArray,
+    setReset,
+  } = useDisplayFetch();
 
   useEffect(() => {
-    // console.log(allPokemon);
-    console.log(state);
-  }, [allPokemon, state]);
+    if (initialLoad) {
+      setInitialLoad(false);
+      return;
+    }
+    if (searchTerm === "") {
+      setIsSearching(false);
+      setReset(true);
+      return;
+    }
+    setLoading(true);
+    const results = handleSearch(searchTerm, allPokemon);
+
+    setSearchArray(results.slice(0, 20));
+    setIsSearching(true);
+  }, [searchTerm]);
+
+  if (error) return <div>Something went wrong...</div>;
 
   return (
     <div className="pokedex-wrapper">
-      <Search />
-      <ul className="pokedex-grid">
-        {state.map((pokemon) => {
-          const name = pokemon.name;
-          return <Card pokemon={pokemon} key={name} />;
-        })}
-      </ul>
+      <Search setSearchTerm={setSearchTerm} />
+      {!reset && (
+        <ul className="pokedex-grid">
+          {state.map((pokemon) => {
+            const name = pokemon.name;
+            return <Card pokemon={pokemon} key={name} />;
+          })}
+        </ul>
+      )}
       {loading ? (
         <Spinner />
       ) : (

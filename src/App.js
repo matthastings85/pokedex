@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PokemonInfo from "./Components/PokemonInfo";
 import Pokedex from "./Components/Pokedex";
 import Header from "./Components/Header";
+import PokemonType from "./Components/PokemonType";
 
 const App = () => (
   <Router>
@@ -14,6 +15,7 @@ const App = () => (
     <Routes>
       <Route path="/" element={<Pokedex />} />
       <Route path="/:pokemonName" element={<PokemonInfo />} />
+      <Route path="/type/:pokemonType" element={<PokemonType />} />
     </Routes>
   </Router>
 );

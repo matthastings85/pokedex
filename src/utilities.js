@@ -50,3 +50,12 @@ export const getEvoDisplayData = async (evoChainNames) => {
 
   return evoArray;
 };
+
+export const handleSearch = (searchTerm, allPokemon) => {
+  if (searchTerm === "") return "";
+  const results = allPokemon.filter((name) => {
+    return name.toLowerCase().includes(searchTerm.toLowerCase()) ? name : null;
+  });
+
+  return results.map((result) => capitalizeName(result));
+};

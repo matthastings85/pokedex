@@ -41,18 +41,20 @@ header {
   justify-content: center;
   width: 100%;
   flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
 }
 
 .card {
   list-style: none;
   text-align: center;
   width: 15rem;
-  margin: 1rem;
+  margin: 0.75rem;
   cursor: pointer;
   position: relative;
-  border: 2px solid var(--foregroud);
   border-radius: 1rem;
-  background-color: var(--background-light);
+  /* background-color: var(--background-light); */
+  box-shadow: var(--foregroud) 0 0 10px;
 }
 
 .card-img {
@@ -376,4 +378,54 @@ header {
 
 .evo-card img {
   width: 100%;
+}
+
+.evo-card a {
+  text-decoration: none;
+  color: var(--background);
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background: var(--background-light);
+  padding: 0 20px;
+  width: 100%;
+  border: blue;
+  position: relative;
+}
+.search-content {
+  position: relative;
+  max-width: 1000px;
+  width: 96%;
+  height: 55px;
+  background: var(--background);
+  margin: 0 auto;
+  border-radius: 40px;
+  color: var(--foregroud);
+}
+.search-content img {
+  position: absolute;
+  left: 15px;
+  top: 14px;
+  width: 30px;
+  margin: 0 10px;
+}
+
+.search-content input {
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0;
+  margin: 8px 0;
+  padding: 0 0 0 60px;
+  border: 0;
+  width: 94%;
+  background: transparent;
+  height: 40px;
+  color: var(--foregroud);
+}
+.search-content input:focus {
+  outline: none;
 }

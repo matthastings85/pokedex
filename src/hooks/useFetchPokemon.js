@@ -9,11 +9,11 @@ import {
 } from "../utilities";
 
 export const useFetchPokemon = (name) => {
-  const [state, setState] = useState([]);
+  const [state, setState] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const fetchPokemon = async () => {
+  const fetchPokemon = async (name) => {
     try {
       setError(false);
       setLoading(true);
@@ -92,8 +92,8 @@ export const useFetchPokemon = (name) => {
   // Initial render, trigger function
   useEffect(() => {
     console.log("Grabbing from API");
-    fetchPokemon();
-  }, []);
+    fetchPokemon(name);
+  }, [name]);
 
   return { state, loading, error };
 };
