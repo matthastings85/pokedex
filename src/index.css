@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap");
+
 body {
   margin: 0;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Orbitron", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --pokemon-red: #e3350d;
@@ -11,25 +13,106 @@ body {
   --foregroud: white;
   background-color: var(--background);
   color: var(--foregroud);
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+button {
+  font-family: "Orbitron", sans-serif;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.header a {
+  color: var(--foregroud);
+  text-decoration: none;
 }
 
 .header-logo {
-  max-width: 350px;
-  margin: 2rem 0 0 0;
+  max-width: 200px;
 }
 
-header {
-  text-align: center;
-  width: 100%;
+.header-logo-div,
+.header-title,
+.header-credits {
+  flex-basis: 30%;
+}
+
+.hero-wrapper {
+  height: 500px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-img {
+  max-width: 8rem;
+}
+
+.hero-img-div {
+  --hero-margin: 7rem;
+  --hero-margin3: 9rem;
+  --hero-margin2: -1rem;
+  border-radius: 50%;
+  border: rgba(255, 255, 255, 0.5) solid 2px;
+  background-color: transparent;
+  box-shadow: rgba(255, 255, 255, 0.75) 0 0 2rem,
+    rgba(255, 255, 255, 0.75) 0 0 1.5rem inset;
+  overflow: visible;
+}
+
+.hero-img0 {
+  align-self: flex-start;
+  margin-top: var(--hero-margin3);
+}
+.hero-img1 {
+  align-self: flex-end;
+  margin-bottom: var(--hero-margin);
+  margin-left: var(--hero-margin2);
+}
+.hero-img2 {
+  align-self: flex-start;
+  margin-top: var(--hero-margin);
+  margin-left: var(--hero-margin2);
+}
+.hero-img3 {
+  align-self: flex-end;
+  margin-bottom: var(--hero-margin3);
+  margin-left: var(--hero-margin2);
+}
+.hero-img4 {
+  margin: 1rem;
+}
+.hero-img4 .hero-img {
+  max-width: 25rem;
+}
+.hero-img5 {
+  align-self: flex-end;
+  margin-bottom: var(--hero-margin3);
+  margin-right: var(--hero-margin2);
+}
+.hero-img6 {
+  align-self: flex-start;
+  margin-top: var(--hero-margin);
+  margin-right: var(--hero-margin2);
+}
+.hero-img7 {
+  align-self: flex-end;
+  margin-bottom: var(--hero-margin);
+  margin-right: var(--hero-margin2);
+}
+.hero-img8 {
+  align-self: flex-start;
+  margin-top: var(--hero-margin3);
 }
 
 .pokedex-wrapper {
-  margin: 0 auto;
+  margin: 2rem auto;
   max-width: 1400px;
   display: flex;
   flex-direction: column;
@@ -49,6 +132,7 @@ header {
   list-style: none;
   text-align: center;
   width: 15rem;
+  height: fit-content;
   margin: 0.75rem;
   cursor: pointer;
   position: relative;
@@ -64,6 +148,12 @@ header {
 .card a {
   text-decoration: none;
   color: var(--foregroud);
+}
+
+.card-num {
+  position: absolute;
+  top: 5px;
+  right: 10px;
 }
 
 .spinner {
@@ -102,15 +192,17 @@ header {
   border-radius: 20px;
   border: none;
   margin: 1rem;
-  padding: 0.2rem 1.5rem;
+  padding: 0.2rem;
   font-size: 1.2rem;
   min-width: 10rem;
+  cursor: pointer;
 }
 
 .type-btn-small {
   margin: 0.2rem;
   font-size: 1rem;
   min-width: auto;
+  width: 5rem;
 }
 
 .poison {
@@ -392,8 +484,6 @@ header {
   height: 100px;
   background: var(--background-light);
   padding: 0 20px;
-  width: 100%;
-  border: blue;
   position: relative;
 }
 .search-content {
@@ -428,4 +518,16 @@ header {
 }
 .search-content input:focus {
   outline: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  background-color: var(--background-light);
+}
+.footer a {
+  color: var(--foregroud);
+  text-decoration: none;
 }

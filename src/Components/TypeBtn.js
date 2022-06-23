@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TypeBtn = ({ typeName, weakness, small }) => {
   if (small) {
@@ -14,11 +15,15 @@ const TypeBtn = ({ typeName, weakness, small }) => {
   return (
     <>
       {weakness ? (
-        <button className={`${typeName} type-btn type-btn-small`}>
-          {typeName}
-        </button>
+        <Link to={`/type/${typeName}`}>
+          <button className={`${typeName} type-btn type-btn-small`}>
+            {typeName}
+          </button>
+        </Link>
       ) : (
-        <button className={`${typeName} type-btn`}>{typeName}</button>
+        <Link to={`/type/${typeName}`}>
+          <button className={`${typeName} type-btn`}>{typeName}</button>
+        </Link>
       )}
     </>
   );

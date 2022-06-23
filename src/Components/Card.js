@@ -17,9 +17,8 @@ const Card = ({ pokemon }) => {
         {types.map((slot, index) => {
           return <TypeBtn key={index} typeName={slot.type.name} small />;
         })}
-        <h3>
-          #{id} {name}
-        </h3>
+        <h3>{name}</h3>
+        <div className="card-num">#{id}</div>
       </Link>
     </li>
   );

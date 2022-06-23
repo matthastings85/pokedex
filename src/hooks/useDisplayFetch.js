@@ -12,6 +12,8 @@ export const useDisplayFetch = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchArray, setSearchArray] = useState([]);
   const [reset, setReset] = useState(false);
+  const [isSearchDisplay, setIsSearchDisplay] = useState(false);
+  const [remainingSearch, setRemainingSearch] = useState([]);
 
   const fetchPokemon = async (url = nextUrl) => {
     try {
@@ -55,14 +57,24 @@ export const useDisplayFetch = () => {
       setError(false);
       setLoading(true);
 
-      const array = searchArray.map(async (name) => {
+      const display = searchArray.slice(0, 20);
+      const remaining = searchArray.slice(20);
+      console.log(display, remaining);
+      setRemainingSearch(remaining);
+
+      const array = display.map(async (name) => {
         const data = await API.fetchPokemon(name.toLowerCase(), API.POKEURL);
         const pokemonId = data.id;
         const types = data.types;
         return { name, pokemonId, data, types };
       });
       const pokeArray = await Promise.all(array);
-      setState(pokeArray);
+      if (isLoadingMore) {
+        setState([...state, ...pokeArray]);
+        setIsLoadingMore(false);
+      } else {
+        setState(pokeArray);
+      }
     } catch (error) {
       setError(true);
     }
@@ -77,11 +89,16 @@ export const useDisplayFetch = () => {
   };
 
   useEffect(() => {
+    if (isLoadingMore && isSearchDisplay) {
+      searchPokemon(remainingSearch);
+    }
     if (isSearching) {
+      setIsSearchDisplay(true);
+      setState([]);
       searchPokemon(searchArray);
       setIsSearching(false);
     }
-    if (!isLoadingMore) return;
+    if (!isLoadingMore || isSearchDisplay) return;
     console.log("Grabbing more from API");
 
     fetchPokemon();
@@ -99,10 +116,13 @@ export const useDisplayFetch = () => {
     loading,
     error,
     reset,
+    remainingSearch,
+    isSearchDisplay,
     setLoading,
     setIsLoadingMore,
     setIsSearching,
     setSearchArray,
     setReset,
+    setIsSearchDisplay,
   };
 };

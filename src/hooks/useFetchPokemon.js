@@ -22,6 +22,7 @@ export const useFetchPokemon = (name) => {
 
       // Isolate basic info
       const pokemonId = pokemon.id;
+      const pokemonName = pokemon.name;
       const imgUrl = pokemon.sprites.other["official-artwork"].front_default;
       const height = pokemon.height;
       const weight = pokemon.weight;
@@ -72,7 +73,7 @@ export const useFetchPokemon = (name) => {
       // Save pokemon data to state
       setState({
         id: pokemonId,
-        name: capitalizeName(name),
+        name: capitalizeName(pokemonName),
         imgUrl,
         height,
         weight,

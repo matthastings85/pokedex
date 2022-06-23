@@ -10,7 +10,7 @@ const EvoChain = ({ evoChain }) => {
         {evoChain.map((pokemon) => {
           return (
             <div key={pokemon.pokemonId} className="evo-card">
-              <Link to={`/${pokemon.pokemonName}`}>
+              <Link to={`/${pokemon.pokemonName.toLowerCase()}`}>
                 <img src={pokemon.imgUrl} alt={pokemon.pokemonName} />
                 <h4>{pokemon.pokemonName}</h4>
               </Link>

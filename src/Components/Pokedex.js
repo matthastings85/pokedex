@@ -3,15 +3,17 @@ import React, { useState, useEffect } from "react";
 // Components
 import Search from "./Search";
 import Card from "./Card";
+import Spinner from "./Spinner";
+import HeroImage from "./HeroImage";
 
 // Hooks
 import { useFetchAllPokemon } from "../hooks/useFetchAllPokemon";
 import { useDisplayFetch } from "../hooks/useDisplayFetch";
-import Spinner from "./Spinner";
 
 // Utilities
-import { capitalizeName, handleSearch } from "../utilities";
-import { useParams } from "react-router-dom";
+import { handleSearch } from "../utilities";
+import Grid from "./Grid";
+import Button from "./Button";
 
 const Pokedex = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,11 +24,14 @@ const Pokedex = () => {
     loading,
     error,
     reset,
+    remainingSearch,
+    isSearchDisplay,
     setLoading,
     setIsLoadingMore,
     setIsSearching,
     setSearchArray,
     setReset,
+    setIsSearchDisplay,
   } = useDisplayFetch();
 
   useEffect(() => {
@@ -36,42 +41,34 @@ const Pokedex = () => {
     }
     if (searchTerm === "") {
       setIsSearching(false);
+      setIsSearchDisplay(false);
       setReset(true);
       return;
     }
     setLoading(true);
     const results = handleSearch(searchTerm, allPokemon);
 
-    setSearchArray(results.slice(0, 20));
+    setSearchArray(results);
     setIsSearching(true);
   }, [searchTerm]);
 
   if (error) return <div>Something went wrong...</div>;
 
   return (
-    <div className="pokedex-wrapper">
+    <>
+      <HeroImage />
       <Search setSearchTerm={setSearchTerm} />
-      {!reset && (
-        <ul className="pokedex-grid">
-          {state.map((pokemon) => {
-            const name = pokemon.name;
-            return <Card pokemon={pokemon} key={name} />;
-          })}
-        </ul>
-      )}
-      {loading ? (
-        <Spinner />
-      ) : (
-        <button
-          className="button"
-          onClick={() => {
-            setIsLoadingMore(true);
-          }}
-        >
-          Load More
-        </button>
-      )}
-    </div>
+      <div className="pokedex-wrapper">
+        {!reset || state !== [] ? <Grid state={state} /> : <Spinner />}
+        {loading && <Spinner />}
+        {remainingSearch.length !== 0 && isSearchDisplay && (
+          <Button text="Load More" callback={setIsLoadingMore} />
+        )}
+        {!isSearchDisplay && !loading && (
+          <Button text="Load More" callback={setIsLoadingMore} />
+        )}
+      </div>
+    </>
   );
 };
 
