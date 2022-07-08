@@ -9,6 +9,7 @@ import Spinner from "./Spinner";
 import Stats from "./Stats";
 import TypeBtn from "./TypeBtn";
 import EvoChain from "./EvoChain";
+import Info from "./Info";
 
 const PokemonInfo = () => {
   const { pokemonName } = useParams();
@@ -42,23 +43,11 @@ const PokemonInfo = () => {
               alt={state.name}
             />
           </div>
-          <div className="info-wrapper">
-            <div className="poke-info">
-              <h4>Height:</h4>
-              <div>{state.height}</div>
-              <h4>Weight:</h4>
-              <div>{state.weight}</div>
-            </div>
-            <div className="poke-info">
-              <h4>Abilities</h4>
-              {state.abilitiesArray !== undefined &&
-                state.abilitiesArray.map((ability) => {
-                  return (
-                    <div key={ability.abilityName}>{ability.abilityName}</div>
-                  );
-                })}
-            </div>
-          </div>
+          <Info
+            weight={state.weight}
+            height={state.height}
+            abilitiesArray={state.abilitiesArray}
+          />
         </div>
         {state.statsArray !== undefined && <Stats stats={state.statsArray} />}
         {state.evoDisplay !== undefined && (

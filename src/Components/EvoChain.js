@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const EvoChain = ({ evoChain }) => {
-  console.log(evoChain);
   return (
     <div className="evo-wrapper">
       <h2>Evolution</h2>

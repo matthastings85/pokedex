@@ -19,6 +19,7 @@ body {
 button {
   font-family: "Orbitron", sans-serif;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -64,6 +65,11 @@ button {
   box-shadow: rgba(255, 255, 255, 0.75) 0 0 2rem,
     rgba(255, 255, 255, 0.75) 0 0 1.5rem inset;
   overflow: visible;
+  transition: all 0.1s ease;
+}
+
+.hero-img-div:hover {
+  transform: scale(1.1);
 }
 
 .hero-img0 {
@@ -139,6 +145,11 @@ button {
   border-radius: 1rem;
   /* background-color: var(--background-light); */
   box-shadow: var(--foregroud) 0 0 10px;
+  transition: all 0.1s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .card-img {
@@ -178,11 +189,18 @@ button {
   background-color: var(--pokemon-yellow);
   color: var(--pokemon-blue);
   font-size: 1.5rem;
-  padding: 1rem 3rem;
+  font-weight: 900;
+  padding: 1rem 5rem;
   margin: 1rem;
-  border: 2px solid var(--pokemon-red);
-  border-radius: 0.5rem;
+  border: 5px solid var(--pokemon-red);
+  border-radius: 2.5rem;
   cursor: pointer;
+  box-shadow: var(--foregroud) 0 0 10px;
+  transition: all 0.1s ease;
+}
+
+.button:hover {
+  transform: scale(1.1);
 }
 
 /* Type buttons */
@@ -258,6 +276,7 @@ button {
 }
 .steel {
   background-color: #616161;
+  color: white;
 }
 .water {
   color: white;
@@ -317,6 +336,7 @@ button {
   display: flex;
   border: 2px solid var(--background);
   border-radius: 0.5rem;
+  position: relative;
 }
 
 .poke-info {
@@ -326,6 +346,54 @@ button {
   padding: 0.5rem;
   border-radius: 0.5rem;
   /* color: var(--foregroud); */
+}
+
+.ability-name {
+  cursor: pointer;
+  background-color: var(--pokemon-blue);
+  padding: 5px 10px;
+  margin: 5px 0;
+  border-radius: 20px;
+  text-align: center;
+  color: var(--foregroud);
+}
+
+.ability-modal {
+  border-radius: 0.5rem;
+  position: absolute;
+  padding: 0.5rem 1rem;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--pokemon-yellow);
+}
+.ability-modal h4 {
+  margin-top: 0;
+}
+.close-span {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 10px;
+  right: 2px;
+  cursor: pointer;
+}
+
+.close-1,
+.close-2 {
+  position: absolute;
+  width: 15px;
+  height: 3px;
+  background-color: var(--background);
+}
+
+.close-1 {
+  transform: rotate(45deg);
+}
+.close-2 {
+  transform: rotate(-45deg);
 }
 
 .poke-info h4 {
@@ -530,4 +598,8 @@ button {
 .footer a {
   color: var(--foregroud);
   text-decoration: none;
+}
+
+.hide {
+  display: none;
 }

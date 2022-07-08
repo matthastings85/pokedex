@@ -11,7 +11,9 @@ const Header = () => {
           <img className="header-logo" src={pokemonLogo} alt="pokemon logo" />
         </Link>
       </div>
-      <h1 className="header-title">Pokédex</h1>
+      <Link to={"/"}>
+        <h1 className="header-title">Pokédex</h1>
+      </Link>
       <div className="header-credits">
         <div>Powered by</div>
         <a href="https://pokeapi.co/">PokéAPI</a>

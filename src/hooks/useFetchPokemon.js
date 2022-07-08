@@ -57,11 +57,24 @@ export const useFetchPokemon = (name) => {
 
       // Isolate abilities
       const abilities = pokemon.abilities;
-      const abilitiesArray = abilities.map((element) => {
+      const prepAbilitiesArray = abilities.map(async (element) => {
         const abilityName = element.ability.name;
         const abilityUrl = element.ability.url;
-        return { abilityName, abilityUrl };
+
+        const data = await API.fetchAbility(abilityUrl);
+
+        const abilityEntires = data.effect_entries;
+
+        let abilityInfo;
+        for (let entry of abilityEntires) {
+          if (entry.language.name === "en") {
+            abilityInfo = entry.short_effect;
+          }
+        }
+        return { abilityName, abilityUrl, abilityInfo };
       });
+
+      const abilitiesArray = await Promise.all(prepAbilitiesArray);
 
       // Isolate Evo-tree data
       const speciesUrl = pokemon.species.url;
