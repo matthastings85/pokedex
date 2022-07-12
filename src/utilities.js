@@ -59,3 +59,17 @@ export const handleSearch = (searchTerm, allPokemon) => {
 
   return results.map((result) => capitalizeName(result));
 };
+
+export const isPersistedState = (stateName) => {
+  const sessionState = sessionStorage.getItem(stateName);
+  return sessionStorage && JSON.parse(sessionState);
+};
+
+export const checkArray = (name, array) => {
+  const alreadyExists = array.filter((pokemon) => pokemon.name === name);
+  if (alreadyExists.length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+};

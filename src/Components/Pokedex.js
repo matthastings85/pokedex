@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 
 // Components
 import Search from "./Search";
-import Card from "./Card";
 import Spinner from "./Spinner";
 import HeroImage from "./HeroImage";
 
 // Hooks
-import { useFetchAllPokemon } from "../hooks/useFetchAllPokemon";
 import { useDisplayFetch } from "../hooks/useDisplayFetch";
 
 // Utilities
@@ -15,10 +13,10 @@ import { handleSearch } from "../utilities";
 import Grid from "./Grid";
 import Button from "./Button";
 
-const Pokedex = () => {
+const Pokedex = ({ pokemonData, setPokemonData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [initialLoad, setInitialLoad] = useState(true);
-  const { allPokemon } = useFetchAllPokemon();
+
   const {
     state,
     loading,
@@ -32,7 +30,8 @@ const Pokedex = () => {
     setSearchArray,
     setReset,
     setIsSearchDisplay,
-  } = useDisplayFetch();
+    allPokemon,
+  } = useDisplayFetch(pokemonData, setPokemonData);
 
   useEffect(() => {
     if (initialLoad) {

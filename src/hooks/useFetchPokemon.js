@@ -6,9 +6,10 @@ import {
   getWeaknesses,
   checkSaveEvoChain,
   getEvoDisplayData,
+  checkArray,
 } from "../utilities";
 
-export const useFetchPokemon = (name) => {
+export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
   const [state, setState] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -18,7 +19,17 @@ export const useFetchPokemon = (name) => {
       setError(false);
       setLoading(true);
 
-      const pokemon = await API.fetchPokemon(name, API.POKEURL);
+      const exists = checkArray(name, pokemonData);
+      let pokemon;
+      if (exists) {
+        const targetPokemon = pokemonData.filter(
+          (pokemon) => pokemon.name === name
+        );
+        pokemon = targetPokemon[0].data;
+      } else {
+        console.log("Grabbing from API");
+        pokemon = await API.fetchPokemon(name, API.POKEURL);
+      }
 
       // Isolate basic info
       const pokemonId = pokemon.id;
@@ -105,7 +116,6 @@ export const useFetchPokemon = (name) => {
 
   // Initial render, trigger function
   useEffect(() => {
-    console.log("Grabbing from API");
     fetchPokemon(name);
   }, [name]);
 

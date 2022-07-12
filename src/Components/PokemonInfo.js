@@ -11,10 +11,14 @@ import TypeBtn from "./TypeBtn";
 import EvoChain from "./EvoChain";
 import Info from "./Info";
 
-const PokemonInfo = () => {
+const PokemonInfo = ({ pokemonData, setPokemonData }) => {
   const { pokemonName } = useParams();
 
-  const { state, loading, error } = useFetchPokemon(pokemonName);
+  const { state, loading, error } = useFetchPokemon(
+    pokemonName,
+    pokemonData,
+    setPokemonData
+  );
 
   if (loading) return <Spinner />;
   if (error) return <div>Something went wrong...</div>;

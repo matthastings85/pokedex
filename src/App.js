@@ -10,16 +10,44 @@ import Header from "./Components/Header";
 import PokemonType from "./Components/PokemonType";
 import Footer from "./Components/Footer";
 
-const App = () => (
-  <Router>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Pokedex />} />
-      <Route path="/:pokemonName" element={<PokemonInfo />} />
-      <Route path="/type/:pokemonType" element={<PokemonType />} />
-    </Routes>
-    <Footer />
-  </Router>
-);
+const App = () => {
+  const [pokemonData, setPokemonData] = useState([]);
+
+  return (
+    <Router>
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Pokedex
+              pokemonData={pokemonData}
+              setPokemonData={setPokemonData}
+            />
+          }
+        />
+        <Route
+          path="/:pokemonName"
+          element={
+            <PokemonInfo
+              pokemonData={pokemonData}
+              setPokemonData={setPokemonData}
+            />
+          }
+        />
+        <Route
+          path="/type/:pokemonType"
+          element={
+            <PokemonType
+              pokemonData={pokemonData}
+              setPokemonData={setPokemonData}
+            />
+          }
+        />
+      </Routes>
+      <Footer />
+    </Router>
+  );
+};
 
 export default App;
