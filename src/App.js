@@ -27,7 +27,7 @@ const App = () => {
           }
         />
         <Route
-          path="/:pokemonName"
+          path="/:name"
           element={
             <PokemonInfo
               pokemonData={pokemonData}

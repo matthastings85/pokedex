@@ -40,7 +40,7 @@ export const checkSaveEvoChain = (evoChain) => {
 
 export const getEvoDisplayData = async (evoChainNames) => {
   const fetchingData = evoChainNames.map(async (name) => {
-    const data = await API.fetchPokemon(name, API.POKEURL);
+    const data = await API.fetchPokemon(API.POKEURL + name);
     const pokemonName = capitalizeName(data.name);
     const pokemonId = data.id;
     const imgUrl = data.sprites.other["official-artwork"].front_default;

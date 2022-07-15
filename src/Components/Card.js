@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { capitalizeName } from "../utilities";
 import TypeBtn from "./TypeBtn";
 
+import noImage from "../images/no_image.jpg";
+
 const Card = ({ pokemon }) => {
   const name = capitalizeName(pokemon.name);
   const id = pokemon.pokemonId;
@@ -13,7 +15,7 @@ const Card = ({ pokemon }) => {
   return (
     <li className="card" id={id}>
       <Link to={`/${pokemon.name.toLowerCase()}`}>
-        <img className="card-img" src={url} alt={name} />
+        <img className="card-img" src={url ? url : noImage} alt={name} />
         {types.map((slot, index) => {
           return <TypeBtn key={index} typeName={slot.type.name} small />;
         })}

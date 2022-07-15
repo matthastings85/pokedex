@@ -55,7 +55,7 @@ const Pokedex = ({ pokemonData, setPokemonData }) => {
 
   return (
     <>
-      <HeroImage />
+      <HeroImage pokemonData={pokemonData} setPokemonData={setPokemonData} />
       <Search setSearchTerm={setSearchTerm} />
       <div className="pokedex-wrapper">
         {!reset || state !== [] ? <Grid state={state} /> : <Spinner />}

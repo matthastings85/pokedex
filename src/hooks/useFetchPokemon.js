@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import API from "../API";
 import {
@@ -14,21 +14,35 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const fetchPokemon = async (name) => {
+  const fetchPokemon = useCallback(async () => {
     try {
       setError(false);
       setLoading(true);
 
-      const exists = checkArray(name, pokemonData);
       let pokemon;
+
+      const exists = checkArray(name, pokemonData);
       if (exists) {
+        console.log("Grabbing from pokemonData", name);
         const targetPokemon = pokemonData.filter(
           (pokemon) => pokemon.name === name
         );
         pokemon = targetPokemon[0].data;
       } else {
-        console.log("Grabbing from API");
-        pokemon = await API.fetchPokemon(name, API.POKEURL);
+        console.log("Grabbing from API", name);
+        pokemon = await API.fetchPokemon(API.POKEURL + name);
+
+        // Save pokemon to pokemonData
+        const pokemonName = pokemon.name;
+        const pokemonId = pokemon.id;
+        const types = pokemon.types;
+        const pokemonObj = {
+          name: pokemonName,
+          pokemonId,
+          data: pokemon,
+          types,
+        };
+        setPokemonData([...pokemonData, pokemonObj]);
       }
 
       // Isolate basic info
@@ -91,8 +105,12 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
       const speciesUrl = pokemon.species.url;
       const speciesData = await API.fetchSpecies(speciesUrl);
       const evoChain = await API.fetchSpecies(speciesData.evolution_chain.url);
-      const evoChainNames = await checkSaveEvoChain(evoChain);
-      const evoDisplay = await getEvoDisplayData(evoChainNames);
+      const evoChainNames = checkSaveEvoChain(evoChain);
+      let evoDisplay;
+
+      evoChainNames.length > 1
+        ? (evoDisplay = await getEvoDisplayData(evoChainNames))
+        : (evoDisplay = null);
 
       // Save pokemon data to state
       setState({
@@ -109,15 +127,16 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
         data: pokemon,
       });
     } catch (error) {
-      setError(true);
+      console.log(name);
+      // setError(true);
     }
     setLoading(false);
-  };
+  }, [name, pokemonData, setPokemonData]);
 
   // Initial render, trigger function
   useEffect(() => {
-    fetchPokemon(name);
-  }, [name]);
+    fetchPokemon();
+  }, [name, fetchPokemon]);
 
   return { state, loading, error };
 };

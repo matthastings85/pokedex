@@ -34,19 +34,21 @@ export const useDisplayFetch = (pokemonData, setPokemonData) => {
 
       // Get data from API or pokemonData
       const array = display.map(async (name) => {
-        const alreadyExists = pokemonData.filter(
-          (pokemon) => name === pokemon.name
-        );
+        const exists = checkArray(name.toLowerCase(), pokemonData);
 
-        if (alreadyExists.length > 0) {
+        if (exists) {
+          const alreadyExists = pokemonData.filter(
+            (pokemon) => name.toLowerCase() === pokemon.name
+          );
           console.log("grabbing from pokemonData");
           return alreadyExists[0];
         } else {
-          console.log("grabbing from ApI");
-          const data = await API.fetchPokemon(name.toLowerCase(), API.POKEURL);
+          console.log("grabbing from API");
+          const data = await API.fetchPokemon(API.POKEURL + name.toLowerCase());
+          const pokemonName = data.name;
           const pokemonId = data.id;
           const types = data.types;
-          const pokemonObj = { name, pokemonId, data, types };
+          const pokemonObj = { name: pokemonName, pokemonId, data, types };
           return pokemonObj;
         }
       });

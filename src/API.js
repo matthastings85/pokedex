@@ -5,8 +5,8 @@ const apiFunctions = {
   fetchNextPokemon: async (url = this.POKEURL) => {
     return await (await fetch(url)).json();
   },
-  fetchPokemon: async (name, url = this.POKEURL) => {
-    return await (await fetch(url + name)).json();
+  fetchPokemon: async (url = this.POKEURL) => {
+    return await (await fetch(url)).json();
   },
   fetchSpecies: async (url) => {
     return await (await fetch(url)).json();

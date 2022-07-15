@@ -11,11 +11,13 @@ import TypeBtn from "./TypeBtn";
 import EvoChain from "./EvoChain";
 import Info from "./Info";
 
+import noImage from "../images/no_image.jpg";
+
 const PokemonInfo = ({ pokemonData, setPokemonData }) => {
-  const { pokemonName } = useParams();
+  const { name } = useParams();
 
   const { state, loading, error } = useFetchPokemon(
-    pokemonName,
+    name,
     pokemonData,
     setPokemonData
   );
@@ -43,7 +45,7 @@ const PokemonInfo = ({ pokemonData, setPokemonData }) => {
           <div className="img-container">
             <img
               className="poke-info-img"
-              src={state.imgUrl}
+              src={state.imgUrl ? state.imgUrl : noImage}
               alt={state.name}
             />
           </div>
@@ -54,8 +56,10 @@ const PokemonInfo = ({ pokemonData, setPokemonData }) => {
           />
         </div>
         {state.statsArray !== undefined && <Stats stats={state.statsArray} />}
-        {state.evoDisplay !== undefined && (
+        {state.evoDisplay !== undefined && state.evoDisplay !== null ? (
           <EvoChain evoChain={state.evoDisplay} />
+        ) : (
+          <div></div>
         )}
       </div>
     </div>

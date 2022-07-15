@@ -1,44 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../API";
+import useGetNumbers from "../hooks/useGetNumbers";
+import noImage from "../images/no_image.jpg";
 
-const HeroImage = () => {
+const HeroImage = ({ pokemonData, setPokemonData }) => {
   const [state, setState] = useState([]);
-  const spriteUrl =
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
+  const numbers = useGetNumbers();
 
-  const array = [];
-  const getRandomNumber = () => {
-    const number = Math.floor(Math.random() * 874 + 1);
-    if (array.includes(number)) {
-      getRandomNumber();
-    } else if (array.length >= 9) {
-      return;
-    } else {
-      array.push(number);
-    }
-  };
+  const getPokemonData = useCallback(
+    async (numbers) => {
+      const gettingData = numbers.map(async (number) => {
+        const data = await API.fetchPokemon(API.POKEURL + number);
+        const name = data.name;
+        const pokemonId = data.id;
+        const types = data.types;
+        const pokemonObj = { name, pokemonId, data, types };
+        setPokemonData([...pokemonData, pokemonObj]);
+        return pokemonObj;
+      });
 
-  const createImageUrls = () => {
-    for (let i = 0; i < 9; i++) {
-      getRandomNumber();
-    }
-    setState(array);
-  };
+      const pokemonArray = await Promise.all(gettingData);
+
+      setState(pokemonArray);
+    },
+    [pokemonData, setPokemonData]
+  );
 
   useEffect(() => {
-    createImageUrls();
-  }, []);
+    getPokemonData(numbers);
+  }, [numbers]);
 
   return (
     <div className="hero-wrapper">
-      {state.map((number, index) => {
+      {state.map((pokemon, index) => {
+        const url =
+          pokemon.data.sprites.other["official-artwork"].front_default;
         return (
-          <div className={"hero-img" + index + " hero-img-div"} key={number}>
-            <Link to={`/${number}`}>
+          <div
+            className={"hero-img" + index + " hero-img-div"}
+            key={pokemon.name}
+          >
+            <Link to={`/${pokemon.name}`}>
               <img
                 className="hero-img"
-                src={spriteUrl + number + ".png"}
-                alt="pokemon image"
+                src={url ? url : noImage}
+                alt={pokemon.name}
               />
             </Link>
           </div>

@@ -7,10 +7,16 @@ import { capitalizeName } from "../utilities";
 import Spinner from "./Spinner";
 import Card from "./Card";
 
-const PokemonType = () => {
+const PokemonType = ({ pokemonData, setPokemonData }) => {
   const { pokemonType } = useParams();
 
-  const { loading, error, state } = useTypeFetch(pokemonType);
+  const { loading, error, state } = useTypeFetch(
+    pokemonType,
+    pokemonData,
+    setPokemonData
+  );
+
+  if (error) return <div>Something went wrong...</div>;
 
   return (
     <div className="pokedex-wrapper">
