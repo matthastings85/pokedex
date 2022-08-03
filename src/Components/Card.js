@@ -14,7 +14,7 @@ const Card = ({ pokemon }) => {
 
   return (
     <li className="card" id={id}>
-      <Link to={`/${pokemon.name.toLowerCase()}`}>
+      <Link to={`/pokemon/${pokemon.name.toLowerCase()}`}>
         <img className="card-img" src={url ? url : noImage} alt={name} />
         {types.map((slot, index) => {
           return <TypeBtn key={index} typeName={slot.type.name} small />;

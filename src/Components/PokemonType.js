@@ -20,7 +20,7 @@ const PokemonType = ({ pokemonData, setPokemonData }) => {
 
   return (
     <div className="pokedex-wrapper">
-      <h2>Type: {capitalizeName(pokemonType)}</h2>
+      <h2>{capitalizeName(pokemonType)} Pokémon</h2>
       {loading ? (
         <Spinner />
       ) : (

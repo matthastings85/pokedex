@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Hooks
 import { useFetchPokemon } from "../hooks/useFetchPokemon";
@@ -12,11 +12,12 @@ import EvoChain from "./EvoChain";
 import Info from "./Info";
 
 import noImage from "../images/no_image.jpg";
+import { capitalizeName } from "../utilities";
 
 const PokemonInfo = ({ pokemonData, setPokemonData }) => {
   const { name } = useParams();
 
-  const { state, loading, error } = useFetchPokemon(
+  const { state, loading, error, prev, next } = useFetchPokemon(
     name,
     pokemonData,
     setPokemonData
@@ -26,6 +27,30 @@ const PokemonInfo = ({ pokemonData, setPokemonData }) => {
   if (error) return <div>Something went wrong...</div>;
   return (
     <div className="poke-info-wrapper pokedex-wrapper">
+      <div className="next">
+        {prev.pokemonId > 0 && prev.name ? (
+          <Link to={`/pokemon/${prev.name}`}>
+            <span className="next-btn">
+              {`< #${prev.pokemonId}`}
+              <span className="next-name">{` ${capitalizeName(
+                prev.name
+              )}`}</span>
+            </span>
+          </Link>
+        ) : (
+          <span></span>
+        )}
+        {next.name && next.pokemonId && (
+          <Link to={`/pokemon/${next.name}`}>
+            <span className="next-btn">
+              <span className="next-name">{`${capitalizeName(
+                next.name
+              )} `}</span>
+              {`#${next.pokemonId} >`}
+            </span>
+          </Link>
+        )}
+      </div>
       <h2>{`${state.name} - #${state.id}`}</h2>
 
       <div className="inner-container">

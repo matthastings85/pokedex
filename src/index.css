@@ -16,6 +16,12 @@ body {
   box-sizing: border-box;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 button {
   font-family: "Orbitron", sans-serif;
 }
@@ -43,6 +49,20 @@ button {
 .header-credits {
   flex-basis: 30%;
   flex-shrink: 1;
+}
+
+.breadcrumb {
+  padding: 0.5rem 1rem;
+  background-color: var(--pokemon-blue);
+}
+
+.breadcrumb a {
+  color: white;
+  text-decoration: none;
+}
+
+.breadcrumb span {
+  padding: 0 0.2rem;
 }
 
 .hero-wrapper {
@@ -155,6 +175,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
 }
 
 .pokedex-grid {
@@ -255,10 +276,10 @@ button {
   text-align: center;
   border-radius: 20px;
   border: none;
-  margin: 1rem;
+  margin: 0.5rem;
   padding: 0.2rem;
   font-size: 1.2rem;
-  min-width: 10rem;
+  min-width: 9rem;
   cursor: pointer;
 }
 
@@ -361,6 +382,32 @@ button {
   /* color: var(--background); */
   padding: 1rem;
   border-radius: 0.5rem;
+  margin-top: 0rem;
+}
+
+.next {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 15px;
+}
+
+.next-btn {
+  padding: 10px;
+  background-color: var(--pokemon-red);
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.next a {
+  color: white;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+  .next-name {
+    display: none;
+  }
 }
 
 .poke-info-wrapper h2 {
@@ -383,12 +430,20 @@ button {
   .poke-info-wrapper {
     width: 90%;
   }
+  .poke-info-wrapper h2 {
+    margin: 0;
+  }
   .inner-wrapper {
     flex-direction: column;
     max-width: 100%;
   }
   .type-container {
     order: 1;
+    margin-bottom: 1rem;
+  }
+  .info-wrapper {
+    order: 2;
+    margin-bottom: 1rem;
   }
 }
 
@@ -488,7 +543,7 @@ button {
 .stats-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin: 1rem;
   position: relative;
   background-color: var(--pokemon-yellow);
@@ -609,7 +664,7 @@ button {
 }
 
 .type-container h3 {
-  margin: 0.5rem;
+  margin: 0rem;
 }
 
 .evo-wrapper {
@@ -622,7 +677,7 @@ button {
 }
 
 .evo-card {
-  flex-basis: 25%;
+  flex-basis: 30%;
   border: 2px solid var(--pokemon-yellow);
   border-radius: 0.5rem;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
@@ -635,6 +690,12 @@ button {
 .evo-card a {
   text-decoration: none;
   color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .evo-card h4 {
+    font-size: 0.8rem;
+  }
 }
 
 .search-wrapper {
@@ -700,4 +761,11 @@ button {
 
 .hide {
   display: none;
+}
+
+.types-flex {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
 }

@@ -7,12 +7,80 @@ import {
   checkSaveEvoChain,
   getEvoDisplayData,
   checkArray,
+  checkArrayById,
 } from "../utilities";
 
 export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
   const [state, setState] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [prev, setPrev] = useState({});
+  const [next, setNext] = useState({});
+  const [currentId, setCurrentId] = useState();
+
+  const getPrevNextPokemon = useCallback(
+    async (currentId) => {
+      if (!currentId) return;
+      try {
+        const prevId = currentId - 1;
+        const nextId = currentId + 1;
+
+        const prevExists = checkArrayById(prevId, pokemonData);
+        const nextExists = checkArrayById(nextId, pokemonData);
+        console.log(prevExists, nextExists);
+        if (prevExists) {
+          console.log("Grabbing from pokemonData");
+          const prevPokemon = pokemonData.filter((pokemon) => {
+            return pokemon.pokemonId === prevId;
+          });
+          setPrev(prevPokemon[0]);
+        } else if (prevId > 0) {
+          console.log("Grabbing from API", prevId);
+          const pokemon = await API.fetchPokemon(API.POKEURL + prevId);
+
+          // Save pokemon to pokemonData
+          const pokemonName = pokemon.name;
+          const pokemonId = pokemon.id;
+          const types = pokemon.types;
+          const pokemonObj = {
+            name: pokemonName,
+            pokemonId,
+            data: pokemon,
+            types,
+          };
+          setPrev(pokemonObj);
+          setPokemonData([...pokemonData, pokemonObj]);
+        }
+
+        if (nextExists) {
+          console.log("Grabbing from pokemonData");
+          const nextPokemon = pokemonData.filter((pokemon) => {
+            return pokemon.pokemonId === nextId;
+          });
+          setNext(nextPokemon[0]);
+        } else {
+          console.log("Grabbing from API", nextId);
+          const pokemon = await API.fetchPokemon(API.POKEURL + nextId);
+
+          // Save pokemon to pokemonData
+          const pokemonName = pokemon.name;
+          const pokemonId = pokemon.id;
+          const types = pokemon.types;
+          const pokemonObj = {
+            name: pokemonName,
+            pokemonId,
+            data: pokemon,
+            types,
+          };
+          setNext(pokemonObj);
+          setPokemonData([...pokemonData, pokemonObj]);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [currentId, pokemonData, setPokemonData]
+  );
 
   const fetchPokemon = useCallback(async () => {
     try {
@@ -51,6 +119,9 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
       const imgUrl = pokemon.sprites.other["official-artwork"].front_default;
       const height = pokemon.height;
       const weight = pokemon.weight;
+
+      // Set currentId to get prev and next pokemon
+      setCurrentId(pokemonId);
 
       // Isolate weaknesses, populated by function call in types map function
       let weaknessesArray = [];
@@ -109,7 +180,11 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
       let evoDisplay;
 
       evoChainNames.length > 1
-        ? (evoDisplay = await getEvoDisplayData(evoChainNames))
+        ? (evoDisplay = await getEvoDisplayData(
+            evoChainNames,
+            pokemonData,
+            setPokemonData
+          ))
         : (evoDisplay = null);
 
       // Save pokemon data to state
@@ -127,8 +202,8 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
         data: pokemon,
       });
     } catch (error) {
-      console.log(name);
-      // setError(true);
+      console.log(error);
+      setError(true);
     }
     setLoading(false);
   }, [name, pokemonData, setPokemonData]);
@@ -136,7 +211,11 @@ export const useFetchPokemon = (name, pokemonData, setPokemonData) => {
   // Initial render, trigger function
   useEffect(() => {
     fetchPokemon();
-  }, [name, fetchPokemon]);
+  }, [name]);
 
-  return { state, loading, error };
+  useEffect(() => {
+    getPrevNextPokemon(currentId);
+  }, [currentId]);
+
+  return { state, loading, error, prev, next };
 };

@@ -38,15 +38,44 @@ export const checkSaveEvoChain = (evoChain) => {
   return array;
 };
 
-export const getEvoDisplayData = async (evoChainNames) => {
+export const getEvoDisplayData = async (
+  evoChainNames,
+  pokemonData,
+  setPokemonData
+) => {
+  const newPokemon = [];
+
   const fetchingData = evoChainNames.map(async (name) => {
-    const data = await API.fetchPokemon(API.POKEURL + name);
-    const pokemonName = capitalizeName(data.name);
-    const pokemonId = data.id;
-    const imgUrl = data.sprites.other["official-artwork"].front_default;
-    return { pokemonId, pokemonName, imgUrl };
+    const exists = checkArray(name, pokemonData);
+    if (exists) {
+      console.log("grabbing from pokemonData - evoChain");
+      const targetPokemon = pokemonData.filter(
+        (pokemon) => pokemon.name === name
+      );
+      const pokemonName = capitalizeName(targetPokemon[0].name);
+      const pokemonId = targetPokemon[0].pokemonId;
+      const imgUrl =
+        targetPokemon[0].data.sprites.other["official-artwork"].front_default;
+      return { pokemonId, pokemonName, imgUrl };
+    } else {
+      const data = await API.fetchPokemon(API.POKEURL + name);
+      const pokemonName = capitalizeName(data.name);
+      const pokemonId = data.id;
+      const imgUrl = data.sprites.other["official-artwork"].front_default;
+      const pokemonObj = {
+        name: data.name,
+        pokemonId,
+        types: data.types,
+        data,
+      };
+      newPokemon.push(pokemonObj);
+
+      return { pokemonId, pokemonName, imgUrl };
+    }
   });
   const evoArray = await Promise.all(fetchingData);
+
+  setPokemonData([...pokemonData, ...newPokemon]);
 
   return evoArray;
 };
@@ -67,6 +96,14 @@ export const isPersistedState = (stateName) => {
 
 export const checkArray = (name, array) => {
   const alreadyExists = array.filter((pokemon) => pokemon.name === name);
+  if (alreadyExists.length !== 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+export const checkArrayById = (id, array) => {
+  const alreadyExists = array.filter((pokemon) => pokemon.pokemonId === id);
   if (alreadyExists.length !== 0) {
     return true;
   } else {

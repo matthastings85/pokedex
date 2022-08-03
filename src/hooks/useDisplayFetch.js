@@ -11,7 +11,7 @@ import { useFetchAllPokemon } from "./useFetchAllPokemon";
 
 export const useDisplayFetch = (pokemonData, setPokemonData) => {
   const [state, setState] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -22,15 +22,17 @@ export const useDisplayFetch = (pokemonData, setPokemonData) => {
 
   const { allPokemon } = useFetchAllPokemon();
 
-  const fetchPokemon = useCallback(async (searchArray) => {
+  const fetchPokemon = useCallback(async (targetArray) => {
     try {
       setError(false);
       setLoading(true);
 
-      const display = searchArray.slice(0, 20);
-      const remaining = searchArray.slice(20);
+      const display = targetArray.slice(0, 20);
+      const remaining = targetArray.slice(20);
 
       setRemainingSearch(remaining);
+
+      const newArray = [];
 
       // Get data from API or pokemonData
       const array = display.map(async (name) => {
@@ -49,24 +51,18 @@ export const useDisplayFetch = (pokemonData, setPokemonData) => {
           const pokemonId = data.id;
           const types = data.types;
           const pokemonObj = { name: pokemonName, pokemonId, data, types };
+          newArray.push(pokemonObj);
           return pokemonObj;
         }
       });
       const pokeArray = await Promise.all(array);
 
-      // Checking if data already exists, then saving it to global state
-      const newArray = pokemonData.slice();
-      pokeArray.forEach((pokemon) => {
-        const exists = checkArray(pokemon.name, newArray);
-        if (!exists) {
-          newArray.push(pokemon);
-        }
-      });
       // Storing Data in global state
-      setPokemonData(newArray);
+
+      setPokemonData((current) => [...current, ...newArray]);
 
       if (isLoadingMore) {
-        setState([...state, ...pokeArray]);
+        setState((current) => [...current, ...pokeArray]);
         setIsLoadingMore(false);
       } else {
         setState(pokeArray);
@@ -107,9 +103,7 @@ export const useDisplayFetch = (pokemonData, setPokemonData) => {
     }
     if (!isLoadingMore || isSearchDisplay) return;
 
-    console.log("Loading More");
     fetchPokemon(remainingSearch);
-    setIsLoadingMore(false);
   }, [isLoadingMore, isSearching]);
 
   // Reset the display after removing search term
